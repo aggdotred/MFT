@@ -8,13 +8,11 @@ public class Hand : MonoBehaviour {
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
     private SteamVR_TrackedObject trackedObj;
 
-	// Use this for initialization
 	void Start () {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
 
 	}
 	
-	// Update is called once per frame
 	void Update () {
         if (controller == null)
         {
