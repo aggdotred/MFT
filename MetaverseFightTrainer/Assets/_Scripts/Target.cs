@@ -5,10 +5,12 @@ public class Target : MonoBehaviour {
     private Color startColor;
     private Material material;
     private string targetName;
-    // private bool isTargetActive;
+    private Transform targetTransform;
+    private bool isTargetActive;
 
     public float originalCountdown;
     public float countdown;
+    public float impactMovement;
    
 
     void Start()
@@ -16,32 +18,36 @@ public class Target : MonoBehaviour {
         material = GetComponent<Renderer>().material;
         startColor = material.color;
         targetName = this.gameObject.name;
+        targetTransform = gameObject.transform;
+        impactMovement = 0.05f;
+        isTargetActive = true;
     }
     private void OnTriggerEnter(Collider col)
     {
-        material.color = Color.green;
-        HitMetrics hitMetrics = FindObjectOfType<HitMetrics>();
-        hitMetrics.IncrementHitCount(targetName);
-                
-        // StartCoroutine(TargetCoroutine());
+        if (isTargetActive)
+        {
+            material.color = Color.green;
+            HitMetrics hitMetrics = FindObjectOfType<HitMetrics>();
+            hitMetrics.IncrementHitCount(targetName);
+            targetTransform.position += Vector3.forward * impactMovement;
+            isTargetActive = false;
+            StartCoroutine(TargetCoroutine());
+        }
 
     }
 
-    private void OnTriggerExit(Collider col)
+    
+
+    IEnumerator TargetCoroutine ()
     {
-
+        while (countdown > 0)
+        {       
+            countdown -= Time.deltaTime;
+            yield return null;
+        }
+        targetTransform.position += Vector3.back * impactMovement;
         material.color = startColor;
+        countdown = originalCountdown;
+        isTargetActive = true;
     }
-
-
-    //IEnumerator TargetCoroutine ()
-    //{
-    //    while (countdown > 0)
-    //    {       
-    //        countdown -= Time.deltaTime;
-    //        yield return null;
-    //    }        
-    //    material.color = startColor;
-    //    countdown = originalCountdown;
-    //}
 }
