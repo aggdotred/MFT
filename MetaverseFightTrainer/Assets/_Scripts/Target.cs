@@ -6,7 +6,7 @@ public class Target : MonoBehaviour {
     private Material material;
     private string targetName;
     private Transform targetTransform;
-    private bool isTargetActive;
+    private bool isTargetAbleToBeHit;
 
     public float originalCountdown;
     public float countdown;
@@ -19,26 +19,27 @@ public class Target : MonoBehaviour {
         startColor = material.color;
         targetName = this.gameObject.name;
         targetTransform = gameObject.transform;
-        impactMovement = 0.05f;
-        isTargetActive = true;
+        isTargetAbleToBeHit = true;
     }
+
+   
+
     private void OnTriggerEnter(Collider col)
     {
-        if (isTargetActive)
+        if (isTargetAbleToBeHit)
         {
             material.color = Color.green;
             HitMetrics hitMetrics = FindObjectOfType<HitMetrics>();
             hitMetrics.IncrementHitCount(targetName);
             targetTransform.position += Vector3.forward * impactMovement;
-            isTargetActive = false;
-            StartCoroutine(TargetCoroutine());
+            isTargetAbleToBeHit = false;
+            StartCoroutine(TargetWasHitCoroutine());
         }
 
     }
 
-    
 
-    IEnumerator TargetCoroutine ()
+    IEnumerator TargetWasHitCoroutine ()
     {
         while (countdown > 0)
         {       
@@ -48,6 +49,6 @@ public class Target : MonoBehaviour {
         targetTransform.position += Vector3.back * impactMovement;
         material.color = startColor;
         countdown = originalCountdown;
-        isTargetActive = true;
+        isTargetAbleToBeHit = true;
     }
 }
