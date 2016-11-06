@@ -24,6 +24,11 @@ public class Target : MonoBehaviour {
 
    
 
+    public void Activate(string targetName)
+    {
+        Debug.Log(targetName);
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         if (isTargetAbleToBeHit)
