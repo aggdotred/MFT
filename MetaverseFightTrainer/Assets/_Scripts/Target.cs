@@ -22,7 +22,6 @@ public class Target : MonoBehaviour {
         isTargetAbleToBeHit = true;
     }
 
-   
 
     public void Activate(string targetName)
     {
