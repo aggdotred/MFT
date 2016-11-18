@@ -3,43 +3,37 @@ using System.Collections;
 
 public class Uke : MonoBehaviour {
 
-    public float ukeMoveSpeed;
+    public float ukeMoveSpeed = 1.0f;
 
     public float maxXPos = .5f;
     public float minXPos = -.5f;
 
-    private Transform ukeTransform;
-    private float ukeMoveRange;
-
-    private Uke uke;
+    private bool movingLeft = false;
+    private bool movingRight = true;
 	
 	void Start () {
-        ukeTransform = gameObject.transform;
-        ukeMoveRange = maxXPos - minXPos;
+        
 	}
 	
 	void Update () {
 
-        
-        
+        if (movingRight)
+        {
+            transform.position += new Vector3(ukeMoveSpeed * Time.deltaTime, 0, 0);
+        } else
+        {
+            transform.position -= new Vector3(ukeMoveSpeed * Time.deltaTime, 0, 0);
+        }
 
-        //if(ukeTransform.position.x < maxXPos)
-        //{
-        //    ukeTransform.position += Vector3.left * .1f;
-        //} else if(ukeTransform.position.x == minXPos)
-        //{
-        //    ukeTransform.position += Vector3.right * .1f;
-        //}
         
+        if (transform.position.x <= minXPos)
+        {
+            movingRight = true;
+        } else if (transform.position.x >= maxXPos)
+        {
+            movingRight = false;
+        }
     }
 
-    void moveUkeLeft()
-    {
-
-    }
-
-    void moveUkeRight()
-    {
-
-    }
+   
 }
